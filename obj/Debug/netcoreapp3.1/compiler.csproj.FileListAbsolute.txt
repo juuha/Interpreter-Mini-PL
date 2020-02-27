@@ -1,0 +1,11 @@
+/home/ritakosk/compiler/bin/Debug/netcoreapp3.1/compiler
+/home/ritakosk/compiler/bin/Debug/netcoreapp3.1/compiler.deps.json
+/home/ritakosk/compiler/bin/Debug/netcoreapp3.1/compiler.runtimeconfig.json
+/home/ritakosk/compiler/bin/Debug/netcoreapp3.1/compiler.runtimeconfig.dev.json
+/home/ritakosk/compiler/bin/Debug/netcoreapp3.1/compiler.dll
+/home/ritakosk/compiler/bin/Debug/netcoreapp3.1/compiler.pdb
+/home/ritakosk/compiler/obj/Debug/netcoreapp3.1/compiler.csprojAssemblyReference.cache
+/home/ritakosk/compiler/obj/Debug/netcoreapp3.1/compiler.AssemblyInfoInputs.cache
+/home/ritakosk/compiler/obj/Debug/netcoreapp3.1/compiler.AssemblyInfo.cs
+/home/ritakosk/compiler/obj/Debug/netcoreapp3.1/compiler.dll
+/home/ritakosk/compiler/obj/Debug/netcoreapp3.1/compiler.pdb
