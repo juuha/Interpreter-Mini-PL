@@ -26,6 +26,8 @@ namespace compiler {
     class Scanner {
         private string filename;
         private String characters;
+        private int line = 1;
+        private int column = 1;
         public Scanner(string filename) {
             this.filename = filename;
             string text = "";
@@ -45,14 +47,20 @@ namespace compiler {
 
             }
             while (Char.IsWhiteSpace(character)) {
+                Console.WriteLine((int)character);
+                if (character == (char)10 || character == (char)13) {
+                    this.column = 0;
+                    this.line++;
+                }
                 skip(1);
                 character = this.characters[0];
             }
             string lexeme = "";
-            switch (character) {
-                // reserved keywords
-                case 'a': // assert
-                {
+            if (Char.IsLetterOrDigit(character)) {
+                // digits and letters
+                switch (character) {
+                    // reserved keywords
+                    case 'a': { // assert
                     if (this.characters.StartsWith("assert")){
                         if (this.characters.Length > 6) {
                             if (char.IsLetterOrDigit(characters[6])) {
@@ -65,8 +73,7 @@ namespace compiler {
                     }
                     goto default;
                 }
-                case 'b': // bool
-                {
+                    case 'b': { // bool
                     if (this.characters.StartsWith("bool")) {
                         if (this.characters.Length > 4) {
                             if (Char.IsLetterOrDigit(this.characters[4])) {
@@ -79,8 +86,7 @@ namespace compiler {
                     }
                     goto default;
                 }
-                case 'd': // do
-                {
+                    case 'd': { // do
                     if (this.characters.StartsWith("do")) {
                         if (this.characters.Length > 2) {
                             if (Char.IsLetterOrDigit(this.characters[2])) {
@@ -93,8 +99,7 @@ namespace compiler {
                     }
                     goto default;
                 }
-                case 'e': // end
-                {
+                    case 'e': { // end
                     if (this.characters.StartsWith("end")) {
                         if (this.characters.Length > 3) {
                             if (Char.IsLetterOrDigit(this.characters[3])) {
@@ -107,8 +112,7 @@ namespace compiler {
                     }
                     goto default;
                 }
-                case 'f': // for
-                {
+                    case 'f': { // for
                     if (this.characters.StartsWith("for")) {
                         if (this.characters.Length > 3) {
                             if (Char.IsLetterOrDigit(this.characters[3])) {
@@ -121,8 +125,7 @@ namespace compiler {
                     }
                     goto default;
                 }
-                case 'i': // in, int
-                {
+                    case 'i': { // in, int
                     if (this.characters.StartsWith("int")) {
                         if (this.characters.Length > 3) {
                             if (Char.IsLetterOrDigit(this.characters[3])) {
@@ -145,8 +148,7 @@ namespace compiler {
                     }
                     goto default;
                 }
-                case 'p': // print
-                {
+                    case 'p': { // print
                     if (this.characters.StartsWith("print")) {
                         if (this.characters.Length > 5) {
                             if (Char.IsLetterOrDigit(this.characters[5])) {
@@ -159,8 +161,7 @@ namespace compiler {
                     }
                     goto default;
                 }
-                case 'r': // read
-                {
+                    case 'r': { // read
                     if (this.characters.StartsWith("read")) {
                         if (this.characters.Length > 4) {
                             if (Char.IsLetterOrDigit(this.characters[4])) {
@@ -173,8 +174,7 @@ namespace compiler {
                     }
                     goto default;
                 }
-                case 's': // string
-                {
+                    case 's': { // string
                     if (this.characters.StartsWith("string")) {
                         if (this.characters.Length > 5) {
                             if (Char.IsLetterOrDigit(this.characters[5])) {
@@ -187,8 +187,7 @@ namespace compiler {
                     }
                     goto default;
                 }
-                case 'v': // var
-                {
+                    case 'v': { // var
                     if (this.characters.StartsWith("var")) {
                         if (this.characters.Length > 3) {
                             if (Char.IsLetterOrDigit(this.characters[3])) {
@@ -201,15 +200,50 @@ namespace compiler {
                     }
                     goto default;
                 }
-                // weird marks
-                case ';': // ;
-                {
+                
+                    // integers
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                    case '0': { // integer
+                    while (Char.IsDigit(character)) {
+                        lexeme += character;
+                        skip(1);
+                        if (this.characters.Length == 0) break;
+                        character = this.characters[0];
+                    }
+                    String[] token = {"int", lexeme};
+                    return token;
+                }
+                    default: {
+                        while (Char.IsLetterOrDigit(character)) {
+                            lexeme += character;
+                            skip(1);
+                            if (this.characters.Length == 0) {
+                                break;
+                            }
+                            character = this.characters[0];
+                        }
+                        String[] token = {"identifier", lexeme};
+                        return token;
+                }
+                }
+            } else {
+                // all other characters
+                switch (character) {
+                    // special symbols
+                    case ';': { // end of statement ;
                     String[] token = {";", ";"};
                     skip(1);
                     return token;
                 }
-                case ':': // :, :=
-                {
+                    case ':': { // declartion : and assignment :=
                     lexeme += ":";
                     skip(1);
                     if (this.characters.Length > 0) {
@@ -223,20 +257,17 @@ namespace compiler {
                     String[] token = {":", ":"};
                     return token; 
                 }
-                case '(': // (
-                {
+                    case '(': { // left parenthesis ()
                     String[] token = {"(", "("};
                     skip(1);
                     return token;
                 }
-                case ')': // )
-                {
+                    case ')': { // right parenthesis )
                     String[] token = {")", ")"};
                     skip(1);
                     return token;
                 }
-                case (char)34: // "
-                {
+                    case (char)34: { // string "string"
                     lexeme += character;
                     skip(1);
                     if (this.characters.Length > 0) {
@@ -260,8 +291,7 @@ namespace compiler {
                     String[] token = {"string", lexeme};
                     return token;
                 }
-                case '.': // ..
-                {
+                    case '.': { // range operator ..
                     if (this.characters.Length > 1) {
                         if (this.characters[1] == '.') {
                             String[] token = {"..", ".."};
@@ -271,93 +301,63 @@ namespace compiler {
                     }
                     goto default;
                 }
-                // operators
-                case '+': // +
-                {
+
+                    // operators
+                    case '+': { // addition +
                     String[] token = {"+", "+"};
                     skip(1);
                     return token;
                 }
-                case '-': // substraction
-                {
+                    case '-': { // substraction -
                     String[] token = {"-", "-"};
                     skip(1);
                     return token;
                 }
-                case '*': // *
-                {
+                    case '*': { // multiplication *
                     String[] token = {"*", "*"};
                     skip(1);
                     return token;
                 }
-                case '/': // /
-                {
+                    case '/': { // division /
                     String[] token = {"/", "/"};
                     skip(1);
                     return token;
                 }
-                case '<': // /
-                {
+                    case '<': { // less than comparator <
                     String[] token = {"<", "<"};
                     skip(1);
                     return token;
                 }
-                case '=': // =
-                {
+                    case '=': { // equals operator =
                     String[] token = {"=", "="};
                     skip(1);
                     return token;
                 }
-                case '&': // &
-                {
+                    case '&': { // and operator &
                     String[] token = {"&", "&"};
                     skip(1);
                     return token;
                 }
-                case '!': // !
-                {
+                    case '!': { // not operator !
                     String[] token = {"!", "!"};
                     skip(1);
                     return token;
                 }
-                // integers
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                case '0': { // integer
-                    while (Char.IsDigit(character)) {
-                        lexeme += character;
-                        skip(1);
-                        if (this.characters.Length == 0) break;
-                        character = this.characters[0];
-                    }
-                    String[] token = {"int", lexeme};
-                    return token;
-                }
-                
-                default: {
-                    while (Char.IsLetterOrDigit(character)) {
-                        lexeme += character;
-                        skip(1);
-                        if (this.characters.Length == 0) break;
-                        character = this.characters[0];
-                    }
-                    if (lexeme.Length == 0) {
+                    case '$': { // end of file
                         lexeme = "$";
+                        String[] token = {"identifier", lexeme};
+                        return token;
                     }
-                    //Console.WriteLine(lexeme);
-                    String[] token = {"identifier", lexeme};
-                    return token;
+                    default: { // any other symbol
+                        throw new Exception($"Unexpected symbol on line: {this.line} on column: {this.column}.");
+                        //skip(1);
+                        //return this.getNext();
+                    }
                 }
             }
         }
         private void skip(int amount) {
+            this.column += amount;
             if (this.characters.Length <= amount) {
                 this.characters = "";
             } else {
