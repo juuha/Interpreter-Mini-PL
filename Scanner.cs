@@ -1,6 +1,6 @@
 using System;
 
-namespace compiler {
+namespace interpreter {
     class Scanner {
         private string filename;
         private String characters;

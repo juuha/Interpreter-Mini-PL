@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 
-namespace compiler {
+namespace interpreter {
     class Program {
         static void Main(string[] args) {
             if (args.Length < 1) {
@@ -10,15 +9,8 @@ namespace compiler {
             }
             string filename = args[0];
             Scanner scanner = new Scanner(filename);
-            while (true) {
-                Console.ReadLine();
-                string[] token = scanner.getNext();
-                if (token[1] != "$") {
-                    Console.Write(token[1] + " --:-- " + token[0]);
-                } else {
-                    break;
-                }
-            }
+            Parser parser = new Parser(scanner);
+            parser.parse();
             Console.WriteLine();
         }
     }
