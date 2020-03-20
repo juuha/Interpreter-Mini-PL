@@ -36,7 +36,6 @@ namespace interpreter {
         private Scanner scanner;
         private string[] symbol; // symbol[0]: type, symbol[1]: lexeme 
         private string[] operators = {"+", "-", "*", "/", "<", "=", "&"};
-        private string unary_op = "!";
 
         public Parser(Scanner scanner) {
             this.scanner = scanner;
