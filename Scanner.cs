@@ -33,151 +33,152 @@ namespace interpreter {
                 character = this.characters[0];
             }
             string lexeme = "";
+            string type = "$$";
             if (Char.IsLetterOrDigit(character)) {
                 // digits and letters
                 switch (character) {
                     // reserved keywords
-                    case 'a': { // assert
-                    if (this.characters.StartsWith("assert")){
-                        if (this.characters.Length > 6) {
-                            if (char.IsLetterOrDigit(characters[6])) {
-                                goto default;
+                    case 'a': // assert
+                        if (this.characters.StartsWith("assert")){
+                            if (this.characters.Length > 6) {
+                                if (char.IsLetterOrDigit(characters[6])) {
+                                    goto default;
+                                }
                             }
+                            lexeme = "assert";
+                            type = "assert";
+                            skip(6);
+                            break;
                         }
-                        String[] token = {"assert", "assert"};
-                        skip(6);
-                        return token;
-                    }
-                    goto default;
-                }
-                    case 'b': { // bool
-                    if (this.characters.StartsWith("bool")) {
-                        if (this.characters.Length > 4) {
-                            if (Char.IsLetterOrDigit(this.characters[4])) {
-                                goto default;
+                        goto default;
+                    case 'b': // bool
+                        if (this.characters.StartsWith("bool")) {
+                            if (this.characters.Length > 4) {
+                                if (Char.IsLetterOrDigit(this.characters[4])) {
+                                    goto default;
+                                }
                             }
+                            lexeme = "bool";
+                            type = "type";
+                            skip(4);
+                            break;
                         }
-                        String[] token = {"bool", "bool"};
-                        skip(4);
-                        return token;
-                    }
-                    goto default;
-                }
-                    case 'd': { // do
-                    if (this.characters.StartsWith("do")) {
-                        if (this.characters.Length > 2) {
-                            if (Char.IsLetterOrDigit(this.characters[2])) {
-                                goto default;
+                        goto default;
+                    case 'd': // do
+                        if (this.characters.StartsWith("do")) {
+                            if (this.characters.Length > 2) {
+                                if (Char.IsLetterOrDigit(this.characters[2])) {
+                                    goto default;
+                                }
                             }
+                            lexeme = "do";
+                            type = "do";
+                            skip(2);
+                            break;
                         }
-                        String[] token = {"do", "do"};
-                        skip(2);
-                        return token;
-                    }
-                    goto default;
-                }
-                    case 'e': { // end
-                    if (this.characters.StartsWith("end")) {
-                        if (this.characters.Length > 3) {
-                            if (Char.IsLetterOrDigit(this.characters[3])) {
-                                goto default;
+                        goto default;
+                    case 'e': // end
+                        if (this.characters.StartsWith("end")) {
+                            if (this.characters.Length > 3) {
+                                if (Char.IsLetterOrDigit(this.characters[3])) {
+                                    goto default;
+                                }
                             }
+                            lexeme = "end";
+                            type = "end";
+                            skip(3);
+                            break;
                         }
-                        String[] token = {"end", "end"};
-                        skip(3);
-                        return token;
-                    }
-                    goto default;
-                }
-                    case 'f': { // for
-                    if (this.characters.StartsWith("for")) {
-                        if (this.characters.Length > 3) {
-                            if (Char.IsLetterOrDigit(this.characters[3])) {
-                                goto default;
+                        goto default;
+                    case 'f': // for
+                        if (this.characters.StartsWith("for")) {
+                            if (this.characters.Length > 3) {
+                                if (Char.IsLetterOrDigit(this.characters[3])) {
+                                    goto default;
+                                }
                             }
+                            lexeme = "for";
+                            type = "for";
+                            skip(3);
+                            break;
                         }
-                        String[] token = {"for", "for"};
-                        skip(3);
-                        return token;
-                    }
-                    goto default;
-                }
-                    case 'i': { // in, int
-                    if (this.characters.StartsWith("int")) {
-                        if (this.characters.Length > 3) {
-                            if (Char.IsLetterOrDigit(this.characters[3])) {
-                                goto default;
+                        goto default;
+                    case 'i': // in, int
+                        if (this.characters.StartsWith("int")) {
+                            if (this.characters.Length > 3) {
+                                if (Char.IsLetterOrDigit(this.characters[3])) {
+                                    goto default;
+                                }
                             }
+                            lexeme = "int";
+                            type = "type";
+                            skip(3);
+                            break;
                         }
-                        String[] token = {"int", "int"};
-                        skip(3);
-                        return token;
-                    }
-                    if (this.characters.StartsWith("in")) {
-                        if (this.characters.Length > 2) {
-                            if (Char.IsLetterOrDigit(this.characters[2])) {
-                                goto default;
+                        if (this.characters.StartsWith("in")) {
+                            if (this.characters.Length > 2) {
+                                if (Char.IsLetterOrDigit(this.characters[2])) {
+                                    goto default;
+                                }
                             }
+                            lexeme = "in";
+                            type = "in";
+                            skip(2);
+                            break;
                         }
-                        String[] token = {"in", "in"};
-                        skip(2);
-                        return token;
-                    }
-                    goto default;
-                }
-                    case 'p': { // print
-                    if (this.characters.StartsWith("print")) {
-                        if (this.characters.Length > 5) {
-                            if (Char.IsLetterOrDigit(this.characters[5])) {
-                                goto default;
+                        goto default;
+                    case 'p': // print
+                        if (this.characters.StartsWith("print")) {
+                            if (this.characters.Length > 5) {
+                                if (Char.IsLetterOrDigit(this.characters[5])) {
+                                    goto default;
+                                }
                             }
+                            lexeme = "print";
+                            type = "print";
+                            skip(5);
+                            break;
                         }
-                        String[] token = {"print", "print"};
-                        skip(5);
-                        return token;
-                    }
-                    goto default;
-                }
-                    case 'r': { // read
-                    if (this.characters.StartsWith("read")) {
-                        if (this.characters.Length > 4) {
-                            if (Char.IsLetterOrDigit(this.characters[4])) {
-                                goto default;
+                        goto default;
+                    case 'r': // read
+                        if (this.characters.StartsWith("read")) {
+                            if (this.characters.Length > 4) {
+                                if (Char.IsLetterOrDigit(this.characters[4])) {
+                                    goto default;
+                                }
                             }
+                            lexeme = "read";
+                            type = "read";
+                            skip(4);
+                            break;
                         }
-                        String[] token = {"read", "read"};
-                        skip(4);
-                        return token;
-                    }
-                    goto default;
-                }
-                    case 's': { // string
-                    if (this.characters.StartsWith("string")) {
-                        if (this.characters.Length > 5) {
-                            if (Char.IsLetterOrDigit(this.characters[5])) {
-                                goto default;
+                        goto default;
+                    case 's': // string
+                        if (this.characters.StartsWith("string")) {
+                            if (this.characters.Length > 5) {
+                                if (Char.IsLetterOrDigit(this.characters[5])) {
+                                    goto default;
+                                }
                             }
+                            lexeme = "string";
+                            type = "type";
+                            skip(5);
+                            break;
                         }
-                        String[] token = {"string", "string"};
-                        skip(5);
-                        return token;
-                    }
-                    goto default;
-                }
-                    case 'v': { // var
-                    if (this.characters.StartsWith("var")) {
-                        if (this.characters.Length > 3) {
-                            if (Char.IsLetterOrDigit(this.characters[3])) {
-                                goto default;
+                        goto default;
+                    case 'v': // var
+                        if (this.characters.StartsWith("var")) {
+                            if (this.characters.Length > 3) {
+                                if (Char.IsLetterOrDigit(this.characters[3])) {
+                                    goto default;
+                                }
                             }
+                            lexeme = "var";
+                            type = "var";
+                            skip(3);
+                            break;
                         }
-                        String[] token = {"var", "var"};
-                        skip(3);
-                        return token;
-                    }
-                    goto default;
-                }
-                
+                        goto default;
                     // integers
                     case '1':
                     case '2':
@@ -188,17 +189,16 @@ namespace interpreter {
                     case '7':
                     case '8':
                     case '9':
-                    case '0': { // integer
-                    while (Char.IsDigit(character)) {
-                        lexeme += character;
-                        skip(1);
-                        if (this.characters.Length == 0) break;
-                        character = this.characters[0];
-                    }
-                    String[] token = {"int", lexeme};
-                    return token;
-                }
-                    default: {
+                    case '0': // integer
+                        while (Char.IsDigit(character)) {
+                            lexeme += character;
+                            skip(1);
+                            if (this.characters.Length == 0) break;
+                            character = this.characters[0];
+                        }
+                        type = "int";
+                        break;
+                    default:
                         while (Char.IsLetterOrDigit(character)) {
                             lexeme += character;
                             skip(1);
@@ -207,132 +207,129 @@ namespace interpreter {
                             }
                             character = this.characters[0];
                         }
-                        String[] token = {"identifier", lexeme};
-                        return token;
-                }
+                        type = "ident";
+                        break;
                 }
             } else {
                 // all other characters
                 switch (character) {
                     // special symbols
-                    case ';': { // end of statement ;
-                    String[] token = {";", ";"};
-                    skip(1);
-                    return token;
-                }
-                    case ':': { // declartion : and assignment :=
-                    lexeme += ":";
-                    skip(1);
-                    if (this.characters.Length > 0) {
-                        if (this.characters[0] == '=') {
-                            lexeme += "=";
-                            String[] tokenEqual = {":=", lexeme};
-                            skip(1);
-                            return tokenEqual; 
-                        }
-                    }
-                    String[] token = {":", ":"};
-                    return token; 
-                }
-                    case '(': { // left parenthesis ()
-                    String[] token = {"(", "("};
-                    skip(1);
-                    return token;
-                }
-                    case ')': { // right parenthesis )
-                    String[] token = {")", ")"};
-                    skip(1);
-                    return token;
-                }
-                    case (char)34: { // string "string"
-                    lexeme += character;
-                    skip(1);
-                    if (this.characters.Length > 0) {
-                        while (true) {
-                            if (this.characters[0] == (char)92) {
-                                lexeme += this.characters[0];
-                                lexeme += this.characters[1];
-                                skip(2);
-                            } else {
-                                if (this.characters[0] == (char)34) {
-                                    lexeme += (char)34;
-                                    skip(1);
-                                    break;
-                                } else {
-                                    lexeme += this.characters[0];
-                                    skip(1);
-                                }
+                    case ';': // end of statement ;
+                        lexeme = ";";
+                        type = ";";
+                        skip(1);
+                        break;
+                    case ':': // declartion : and assignment :=
+                        lexeme += ":";
+                        skip(1);
+                        if (this.characters.Length > 0) {
+                            if (this.characters[0] == '=') {
+                                lexeme += "=";
+                                type = ":=";
+                                skip(1);
+                                break;
                             }
-                        }   
-                    }
-                    String[] token = {"string", lexeme};
-                    return token;
-                }
-                    case '.': { // range operator ..
-                    if (this.characters.Length > 1) {
-                        if (this.characters[1] == '.') {
-                            String[] token = {"..", ".."};
-                            skip(2);
-                            return token;
                         }
-                    }
-                    goto default;
-                }
+                        type = ":";
+                        break;
+                    case '(': // left parenthesis ()
+                        lexeme = "(";
+                        type = "(";
+                        skip(1);
+                        break;
+                    case ')': // right parenthesis )
+                        lexeme = ")";
+                        type = ")";
+                        skip(1);
+                        break;
+                    case (char)34: // string "string"
+                        lexeme += character;
+                        type = "string";
+                        skip(1);
+                        if (this.characters.Length > 0) {
+                            while (true) {
+                                if (this.characters[0] == (char)92) {
+                                    lexeme += this.characters[0];
+                                    lexeme += this.characters[1];
+                                    skip(2);
+                                } else {
+                                    if (this.characters[0] == (char)34) {
+                                        lexeme += (char)34;
+                                        skip(1);
+                                        break;
+                                    } else {
+                                        lexeme += this.characters[0];
+                                        skip(1);
+                                    }
+                                }
+                            }   
+                        }
+                        break;
+                    case '.': // range operator ..
+                        if (this.characters.Length > 1) {
+                            if (this.characters[1] == '.') {
+                                lexeme = "..";
+                                type = "..";
+                                skip(2);
+                                break;
+                            }
+                        }
+                        goto default;
 
                     // operators
-                    case '+': { // addition +
-                    String[] token = {"+", "+"};
-                    skip(1);
-                    return token;
-                }
-                    case '-': { // substraction -
-                    String[] token = {"-", "-"};
-                    skip(1);
-                    return token;
-                }
-                    case '*': { // multiplication *
-                    String[] token = {"*", "*"};
-                    skip(1);
-                    return token;
-                }
-                    case '/': { // division /
-                    String[] token = {"/", "/"};
-                    skip(1);
-                    return token;
-                }
-                    case '<': { // less than comparator <
-                    String[] token = {"<", "<"};
-                    skip(1);
-                    return token;
-                }
-                    case '=': { // equals operator =
-                    String[] token = {"=", "="};
-                    skip(1);
-                    return token;
-                }
-                    case '&': { // and operator &
-                    String[] token = {"&", "&"};
-                    skip(1);
-                    return token;
-                }
-                    case '!': { // not operator !
-                    String[] token = {"!", "!"};
-                    skip(1);
-                    return token;
-                }
-                    case '$': { // end of file
-                        lexeme = "$";
-                        String[] token = {"identifier", lexeme};
-                        return token;
-                    }
-                    default: { // any other symbol
+                    case '+': // addition +
+                        lexeme = "+";
+                        type = "+";
+                        skip(1);
+                        break;
+                    case '-': // substraction -
+                        lexeme = "-";
+                        type = "-";
+                        skip(1);
+                        break;
+                    case '*': // multiplication *
+                        lexeme = "*";
+                        type = "*";
+                        skip(1);
+                        break;
+                    case '/': // division /
+                        lexeme = "/";
+                        type = "/";
+                        skip(1);
+                        break;
+                    case '<': // less than comparator <
+                        lexeme = "<";
+                        type = "<";
+                        skip(1);
+                        break;
+                    case '=': // equals operator =
+                        lexeme = "=";
+                        type = "=";
+                        skip(1);
+                        break;
+                    case '&': // and operator &
+                        lexeme = "&";
+                        type = "&";
+                        skip(1);
+                        break;
+                    case '!': // not operator !
+                        lexeme = "!";
+                        type = "!";
+                        skip(1);
+                        break;
+                    case '$':// end of file
+                        lexeme = "$$";
+                        type = "$$";
+                        break;
+                    default: // any other symbol
                         //throw new Exception($"Unexpected symbol on line: {this.line} on column: {this.column}.");
                         Console.WriteLine($"Unexpected symbol on line: {this.line} on column: {this.column}. Skipping to next symbol.");
                         skip(1);
                         return this.getNext();
-                    }
                 }
             }
+            String[] token = {type, lexeme};
+            return token;
         }
         private void skip(int amount) {
             this.column += amount;
