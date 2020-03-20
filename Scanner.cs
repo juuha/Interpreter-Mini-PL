@@ -279,42 +279,42 @@ namespace interpreter {
                     // operators
                     case '+': // addition +
                         lexeme = "+";
-                        type = "+";
+                        type = "op";
                         skip(1);
                         break;
                     case '-': // substraction -
                         lexeme = "-";
-                        type = "-";
+                        type = "op";
                         skip(1);
                         break;
                     case '*': // multiplication *
                         lexeme = "*";
-                        type = "*";
+                        type = "op";
                         skip(1);
                         break;
                     case '/': // division /
                         lexeme = "/";
-                        type = "/";
+                        type = "op";
                         skip(1);
                         break;
                     case '<': // less than comparator <
                         lexeme = "<";
-                        type = "<";
+                        type = "op";
                         skip(1);
                         break;
                     case '=': // equals operator =
                         lexeme = "=";
-                        type = "=";
+                        type = "op";
                         skip(1);
                         break;
                     case '&': // and operator &
                         lexeme = "&";
-                        type = "&";
+                        type = "op";
                         skip(1);
                         break;
                     case '!': // not operator !
                         lexeme = "!";
-                        type = "!";
+                        type = "unary_op";
                         skip(1);
                         break;
                     case '$':// end of file
