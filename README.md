@@ -28,4 +28,4 @@ This project is an interpreter meant for a Mini-PL language defined by the follo
 
 1. Install .NET core (dotnet) from [here](https://dotnet.microsoft.com/download).
 2. Download or clone this project onto a local repository.
-3. Run the command `dotnet run <filename>` in the root directory. (Where this README is). Replace the <filename> with for example `sample1.txt`.
+3. Run the command `dotnet run <filename>` in the root directory. (Where this README is). Replace the `<filename>` with for example `sample1.txt`.
