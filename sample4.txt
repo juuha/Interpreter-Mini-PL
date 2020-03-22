@@ -1,2 +1,9 @@
-"asdasd \" yoyooyo"
--5 +5asdasd£asdasd
+print 1;
+assert (!(5<2) & ("yo" = "yo"));
+print 2;
+assert (((2 = 5)));
+print 3;
+assert ((5<2) = (2 = 3));
+print 4;
+assert (!(!(2<5)));
+print 5;

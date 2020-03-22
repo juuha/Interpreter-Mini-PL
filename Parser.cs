@@ -42,181 +42,191 @@ namespace interpreter {
             this.symbol = this.scanner.getNext();
         }
 
-        public void parse() {
-            program();
-            /*while (true) {
-                Console.ReadLine();
-                string[] token = this.scanner.getNext();
-                if (token[1] != "$$") {
-                    Console.Write(token[1] + " --:-- " + token[0]);
-                } else {
-                    break;
-                }
-            }*/
+        public Node parse() {
+            return program();
         }
 
-        private void program() {
-            statements();
+        private Node program() {
+            Node program = statements();
             match("$$");
+            return program;
         }
 
-        private void statements() {
-            statement();
+        private Node statements() {
+            Node statements = new Node("statements", "");
+            statements.addNode(statement());
             match(";");
             while (symbol[0] != "$$" && symbol[0] != "end") {
-                statement();
+                statements.addNode(statement());
                 match(";");
             }
+            return statements;
         }
 
-        private void statement() {
+        private Node statement() {
+            Node statement = new Node("statement", "");
             switch (symbol[0]) {
                 case "var":
-                    match("var");
-                    match_id();
-                    match(":");
-                    type();
+                    statement.addNode(match("var"));
+                    statement.addNode(match_id());
+                    statement.addNode(match(":"));
+                    statement.addNode(type());
                     if (symbol[0] == ":=") {
-                        match(":=");
-                        expression();
+                        statement.addNode(match(":="));
+                        statement.addNode(expression());
                     }
                     break;
                 case "for":
-                    match("for");
-                    match_id();
-                    match("in");
-                    expression();
-                    match("..");
-                    expression();
-                    match("do");
-                    statements();
-                    match("end");
-                    match("for");
+                    statement.addNode(match("for"));
+                    statement.addNode(match_id());
+                    statement.addNode(match("in"));
+                    statement.addNode(expression());
+                    statement.addNode(match(".."));
+                    statement.addNode(expression());
+                    statement.addNode(match("do"));
+                    statement.addNode(statements());
+                    statement.addNode(match("end"));
+                    statement.addNode(match("for"));
                     break;
                 case "read": 
-                    match("read");
-                    match_id();
+                    statement.addNode(match("read"));
+                    statement.addNode(match_id());
                     break;
                 case "print":
-                    match("print");
-                    expression();
+                    statement.addNode(match("print"));
+                    statement.addNode(expression());
                     break;
                 case "assert":
-                    match("assert");
-                    match("(");
-                    expression();
-                    match(")");
+                    statement.addNode(match("assert"));
+                    statement.addNode(match("("));
+                    statement.addNode(expression());
+                    statement.addNode(match(")"));
                     break;
                 case "ident":
-                    match_id();
-                    match(":=");
-                    expression();
+                    statement.addNode(match_id());
+                    statement.addNode(match(":="));
+                    statement.addNode(expression());
                     break;
-                default: throw new Exception($"A statement can't start with {symbol[1]}.");
+                default: 
+                    throw new Exception($"A statement can't start with {symbol[1]}.");
             }
+            return statement;
         }
 
-        private void expression() {
+        private Node expression() {
+            Node expression = new Node("expression", "");
             switch (symbol[0]) {
                 case "unary_op":
-                    match("!");
-                    operand();
+                    expression.addNode(match("!"));
+                    expression.addNode(operand());
                     break;
                 case "int":
                 case "string":
                 case "ident": 
-                case "(": operand(); break;
+                case "(": 
+                    expression.addNode(operand()); 
+                    break;
                 default: throw new Exception($"Unexpected symbol {symbol[1]}, expected an operand, an opening paranthesis or an unary operator.");
             }
             if (symbol[0] == "op") {
                 switch (symbol[1]) {
                     case "+": 
-                        match("+");
+                        expression.addNode(match("+"));
                         break;
                     case "-": 
-                        match("-");
+                        expression.addNode(match("-"));
                         break;
                     case "*": 
-                        match("*");
+                        expression.addNode(match("*"));
                         break;
                     case "/": 
-                        match("/");
+                        expression.addNode(match("/"));
                         break;
                     case "<": 
-                        match("<");
+                        expression.addNode(match("<"));
                         break;
                     case "=": 
-                        match("=");
+                        expression.addNode(match("="));
                         break;
                     case "&": 
-                        match("&");
+                        expression.addNode(match("&"));
                         break;
                     default: throw new Exception($"Unexpected symbol {symbol[1]}, expected an operator.");
                 }
-                operand();
+                expression.addNode(operand());
             }
+            return expression;
         }
 
-        private void operand() {
+        private Node operand() {
+            Node operand = new Node("operand", "");
             switch (symbol[0]) {
                 case "int":
                 case "string":
-                    match_literal();
+                    operand.addNode(match_literal());
                     break;
                 case "ident": 
-                    match_id();
+                    operand.addNode(match_id());
                     break;
                 case "(": 
-                    match("(");
-                    expression();
-                    match(")");
+                    operand.addNode(match("("));
+                    operand.addNode(expression());
+                    operand.addNode(match(")"));
                     break;
                 default: throw new Exception($"Unexpected symbol {symbol[1]}, expected an operand or an opening paranthesis.");
             }
+            return operand;
         }
 
-        private void type() {
+        private Node type() {
+            Node type = new Node("type", "");
             if (symbol[0] == "type") {
                 switch (symbol[1]) {
                     case "int": 
-                        match("int");
+                        type.addNode(match("int"));
                         break;
                     case "string": 
-                        match("string");
+                        type.addNode(match("string"));
                         break;
                     case "bool": 
-                        match("bool");
+                        type.addNode(match("bool"));
                         break;
                     default: throw new Exception($"Unexpected symbol {symbol[1]}, expected a type.");
                 }
             } else {
                 throw new Exception($"Unexpected symbol {symbol[1]}, expected a type.");
             }
-            
+            return type;
         }
 
-        private void match(String expected) {
+        private Node match(String expected) {
             if (symbol[1] == expected) {
-                Console.WriteLine($"Matched symbol {symbol[1]}");
+                Node matched = new Node(symbol[0], symbol[1]);
+                //Console.WriteLine($"Matched symbol {symbol[1]}");
                 symbol = scanner.getNext();
+                return matched;
             } else {
                 throw new Exception($"Unexpected symbol {symbol[1]}, expected {expected}.");
             }
         }
 
-        private void match_id() {
+        private Node match_id() {
             if (symbol[0] == "ident") {
-                Console.WriteLine($"Matched identifier {symbol[1]}");
+                Node matched = new Node(symbol[0], symbol[1]);
+                //Console.WriteLine($"Matched identifier {symbol[1]}");
                 symbol = scanner.getNext();
+                return matched;
             } else {
                 throw new Exception($"Unexpected symbol {symbol[1]}, expected an identifier.");
             }
         }
 
-        private void match_literal() {
+        private Node match_literal() {
             if (symbol[0] == "int" || symbol[0] == "string") {
-                Console.WriteLine($"Matched literal {symbol[1]}");
+                Node matched = new Node(symbol[0], symbol[1]);
+                //Console.WriteLine($"Matched literal {symbol[1]}");
                 symbol = scanner.getNext();
+                return matched;
             } else {
                 throw new Exception($"Unexpected symbol {symbol[1]}, expected a literal.");
             }

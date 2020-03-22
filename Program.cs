@@ -10,8 +10,9 @@ namespace interpreter {
             string filename = args[0];
             Scanner scanner = new Scanner(filename);
             Parser parser = new Parser(scanner);
-            parser.parse();
-            Console.WriteLine();
+            Node tree = parser.parse();
+            Interpreter interpreter = new Interpreter(tree);
+            interpreter.interpret();
         }
     }
 }

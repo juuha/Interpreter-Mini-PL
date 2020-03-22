@@ -243,7 +243,7 @@ namespace interpreter {
                         skip(1);
                         break;
                     case (char)34: // string "string"
-                        lexeme += character;
+                        lexeme += "";
                         type = "string";
                         skip(1);
                         if (this.characters.Length > 0) {
@@ -254,7 +254,6 @@ namespace interpreter {
                                     skip(2);
                                 } else {
                                     if (this.characters[0] == (char)34) {
-                                        lexeme += (char)34;
                                         skip(1);
                                         break;
                                     } else {
