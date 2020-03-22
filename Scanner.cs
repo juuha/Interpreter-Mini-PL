@@ -291,10 +291,30 @@ namespace interpreter {
                         type = "op";
                         skip(1);
                         break;
-                    case '/': // division /
-                        lexeme = "/";
-                        type = "op";
+                    case '/': // division /, start of comment */, line comment //
+                        lexeme += "/";
                         skip(1);
+                        if (this.characters.Length > 0) {
+                            if (this.characters[0] == '/') {
+                                while (true) {
+                                    if (this.characters[0] == (char)10 || this.characters[0] == (char)13) {
+                                        skip(1);
+                                        return this.getNext();
+                                    }
+                                    skip(1);
+                                }
+                            }
+                            if (this.characters[0] == '*') {
+                                while (true) {
+                                    if (this.characters[0] == '*' && this.characters[1] == '/') {
+                                        skip(2);
+                                        return this.getNext();
+                                    }
+                                    skip(1);
+                                }
+                            }
+                        }
+                        type = "op";
                         break;
                     case '<': // less than comparator <
                         lexeme = "<";
